@@ -1,0 +1,341 @@
+@use "./../../styles/index" as *;
+@use "./../../styles/theme" as *;
+
+/* Upload Area */
+.file-uploader-converter {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .file-uploader {
+    width: 100%;
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    gap: 10px;
+    &:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+      background-color: rgba(var(--primary-rgb), 0.05);
+    }
+    .file-uploader.dragging {
+      border-color: var(--primary);
+      background-color: rgba(var(--primary-rgb), 0.05);
+    }
+    .upload-icon {
+      width: 40px;
+      height: 40px;
+    }
+    .drag-title {
+      font-size: clamp(1rem, calc(2vw + 0.5rem), 1.5rem);
+    }
+
+    .drag-subtitle {
+      font-size: clamp(0.7rem, calc(1vw), 1.2rem);
+    }
+  }
+
+  .file-uploader.secondary {
+    padding: 16px;
+    .upload-area-secondary {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      gap: 10px;
+      .upload-text {
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+    .upload-icon {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .remove-all-button-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+    .button-icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+    }
+  }
+}
+
+/* Files List */
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  /* File Converter */
+  .file-converter {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    // align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+
+    // @include for-tablet-screen {
+    //   flex-direction: column;
+    //   align-items: flex-start;
+    //   gap: 16px;
+    // }
+    .file-info-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      .file-info {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: space-between;
+
+        .file-title {
+          display: flex;
+          align-items: center;
+
+          .file-icon {
+            min-width: 32px;
+            height: 32px;
+            background-color: rgba(var(--secondary-rgb));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+          }
+
+          .file-name-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            .file-name {
+              font-size: 16px;
+              font-weight: 500;
+              margin-right: 20px;
+              text-align: start;
+              word-break: break-all;
+              color: var(--text-primary);
+            }
+
+            .file-size {
+              font-size: 12px;
+              color: var(--text-muted);
+            }
+          }
+        }
+
+        .title-remove-button {
+          display: none;
+
+          @include for-mobile-screen {
+            width: 32px;
+            height: 32px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+
+        .remove-icon {
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      .converter-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .format-selector {
+          display: flex;
+          align-items: center;
+          position: relative;
+
+          .format-label {
+            width: 80px;
+            margin-right: 0px;
+            font-size: 14px;
+            color: var(--text-muted);
+          }
+
+          .dropdown-container {
+            position: relative;
+
+            .dropdown-button {
+              min-width: 80px;
+              padding: 6px 10px;
+              background-color: transparent;
+              border: 1px solid var(--border);
+              border-radius: 6px;
+              color: var(--text-primary);
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              cursor: pointer;
+              font-size: clamp(0.8rem, calc(0.5vw), 1rem);
+              .dropdown-icon {
+                width: 16px;
+                height: 16px;
+                margin-left: 8px;
+              }
+            }
+
+            .dropdown-menu {
+              position: absolute;
+              top: 100%;
+              left: 0;
+              width: 200px;
+              background-color: var(--background);
+              border: 1px solid var(--border);
+              border-radius: 6px;
+              margin-top: 4px;
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              padding: 8px;
+              z-index: 10;
+              box-shadow: 0 4px 6px var(--shadow);
+
+              .dropdown-item {
+                padding: 8px;
+                text-align: center;
+                background: transparent;
+                border: none;
+                color: var(--text-primary);
+                cursor: pointer;
+                border-radius: 4px;
+
+                &.selected {
+                  background-color: rgba(var(--primary-rgb), 0.2);
+                  color: var(--primary);
+                }
+
+                &:hover {
+                  background-color: var(--surface);
+                }
+              }
+            }
+          }
+        }
+
+        /* Progress Bar */
+        .progress-container {
+          width: 120px;
+          height: 36px;
+          background-color: var(--surface);
+          border-radius: 6px;
+          overflow: hidden;
+          position: relative;
+
+          .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+          }
+
+          .progress-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+          }
+        }
+
+        .remove-button {
+          width: 32px;
+          height: 32px;
+          background: transparent;
+          border: none;
+          color: var(--text-muted);
+          cursor: pointer;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          @include for-mobile-screen {
+            display: none;
+          }
+
+          &:hover {
+            background-color: var(--border);
+          }
+        }
+
+        .convert-button.disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        @include for-tablet-screen {
+          width: 100%;
+          justify-content: center;
+          gap: 10px;
+        }
+
+        @include for-mobile-screen {
+          flex-wrap: wrap;
+        }
+      }
+      @include for-mobile-screen {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+    }
+    .error-message {
+      display: flex;
+      justify-content: end;
+      align-items: center;
+      color: var(--error);
+      font-size: 16px;
+      margin-top: 8px;
+      gap: 3px;
+    }
+  }
+}
+
+.add-more-button {
+  width: 100%;
+  margin-top: 20px;
+  color: var(--text-primary);
+}
+
+.file-icon svg {
+  width: 16px;
+  height: 16px;
+}

@@ -1,0 +1,114 @@
+// _theme.scss
+
+// Function to convert hex to rgb
+@function hexToRGB($hex) {
+  // Make sure we're using the actual color functions from Sass
+  // These will return the decimal RGB values
+  @return "#{red($hex)}, #{green($hex)}, #{blue($hex)}";
+}
+
+// Theme color variables
+$colors: (
+  // Base colors
+  primary: #255cd3,
+  secondary: #006476,
+  // Light theme colors
+  light:
+    (
+      background: #ffffff,
+      surface: #f3f4f6,
+      border: #d1d5db,
+      border-hover: #9ca3af,
+      text-primary: #1a202c,
+      text-secondary: #4b5563,
+      text-muted: #6b7280,
+      shadow: rgba(0, 0, 0, 0.1),
+      button-bg: #e5e7eb,
+      button-hover: #d1d5db,
+      overlay: rgba(239, 241, 244, 1),
+    ),
+
+  // Dark theme colors
+  dark:
+    (
+      background: #050a18,
+      surface: #0a1020,
+      border: #374151,
+      border-hover: #4b5563,
+      text-primary: #ffffff,
+      text-secondary: #b0b7c3,
+      text-muted: #9ca3af,
+      shadow: rgba(0, 0, 0, 0.3),
+      button-bg: #374151,
+      button-hover: #4b5563,
+      overlay: rgba(17, 24, 39, 1),
+    )
+);
+
+// Function to get color from theme
+@function color($key, $theme: null) {
+  @if ($theme == null) {
+    @return map-get($colors, $key);
+  } @else {
+    $theme-colors: map-get($colors, $theme);
+    @return map-get($theme-colors, $key);
+  }
+}
+
+// Mixins for theme switching
+@mixin light-theme {
+  // Main colors
+  --primary: #{color("primary")};
+  --primary-rgb: #{hexToRGB(color("primary"))};
+  --secondary: #{color("secondary")};
+  --secondary-rgb: #{hexToRGB(color("secondary"))};
+
+  // Theme colors
+  --background: #{color("background", "light")};
+  --surface: #{color("surface", "light")};
+  --border: #{color("border", "light")};
+  --border-hover: #{color("border-hover", "light")};
+  --text-primary: #{color("text-primary", "light")};
+  --text-secondary: #{color("text-secondary", "light")};
+  --text-muted: #{color("text-muted", "light")};
+  --shadow: #{color("shadow", "light")};
+  --button-bg: #{color("button-bg", "light")};
+  --button-hover: #{color("button-hover", "light")};
+  --overlay: #{color("overlay", "light")};
+}
+
+@mixin dark-theme {
+  // Main colors
+  --primary: #{color("primary")};
+  --primary-rgb: #{hexToRGB(color("primary"))};
+  --secondary: #{color("secondary")};
+  --secondary-rgb: #{hexToRGB(color("secondary"))};
+
+  // Theme colors
+  --background: #{color("background", "dark")};
+  --surface: #{color("surface", "dark")};
+  --border: #{color("border", "dark")};
+  --border-hover: #{color("border-hover", "dark")};
+  --text-primary: #{color("text-primary", "dark")};
+  --text-secondary: #{color("text-secondary", "dark")};
+  --text-muted: #{color("text-muted", "dark")};
+  --shadow: #{color("shadow", "dark")};
+  --button-bg: #{color("button-bg", "dark")};
+  --button-hover: #{color("button-hover", "dark")};
+  --overlay: #{color("overlay", "dark")};
+}
+
+// Root variables for CSS
+:root {
+  @include light-theme;
+}
+
+// Apply dark theme to html with .dark class
+html.dark {
+  @include dark-theme;
+}
+
+// Apply dark theme to body with .dark class for compatibility
+body.dark {
+  @include dark-theme;
+}
