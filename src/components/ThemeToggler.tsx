@@ -4,7 +4,6 @@ import { Icon } from "@iconify/react";
 export const ThemeToggle = () => {
   // Check for user's preferred color scheme or saved preference
   const getInitialTheme = () => {
-    // Check localStorage first
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
       return savedTheme === "dark";
